@@ -1,121 +1,137 @@
 <!DOCTYPE html>
-<html lang="uk">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!-- Smart App Banner for iOS -->
+  <base href="/" />
+  
   <meta name="apple-itunes-app" content="app-id=6741595234, app-argument=ifootballpro://" />
-
-  <title>iFootball Pro</title>
+  
+  <title>Open IFootball App</title>
   <style>
-    /* Global Reset & Font */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+      body {
+          margin: 0;
+          padding: 0;
+          background-color: #0A0A0A;
+          color: white;
+          font-family: Arial, sans-serif;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+          text-align: center;
+      }
 
-    body {
-      font-family: "Arial", sans-serif;
-      background: linear-gradient(135deg, #007aff 0%, #50c9ff 100%);
-      color: #333;
-      text-align: center;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-    }
-    
-    .container {
-      background-color: #fff;
-      width: 90%;
-      max-width: 600px;
-      margin: 60px auto 0 auto;
-      padding: 40px;
-      border-radius: 10px;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-    }
+      .container {
+          max-width: 400px;
+          padding: 20px;
+          background-color: #1A1A1A;
+          border-radius: 12px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      }
 
-    h1 {
-      font-size: 2.2rem;
-      margin-bottom: 20px;
-      color: #007aff;
-    }
+      h1 {
+          font-size: 2rem;
+          margin-bottom: 10px;
+          color: #30DB5B;
+      }
 
-    p {
-      font-size: 1rem;
-      line-height: 1.6;
-      margin-bottom: 20px;
-    }
+      p {
+          font-size: 1rem;
+          color: #CCCCCC;
+          margin-bottom: 20px;
+      }
 
-    a.button {
-      display: inline-block;
-      padding: 14px 28px;
-      margin: 10px 5px 0 5px;
-      text-decoration: none;
-      background-color: #007aff;
-      color: #fff;
-      border-radius: 50px;
-      font-size: 1rem;
-      transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    }
+      .buttons {
+          display: flex;
+          justify-content: space-around;
+          margin-top: 20px;
+      }
 
-    a.button:hover {
-      background-color: #005bb5;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    }
+      .btn {
+          display: flex;
+          align-items: center;
+          background-color: #30DB5B;
+          color: #0A0A0A;
+          text-decoration: none;
+          padding: 8px 12px;
+          border-radius: 8px;
+          font-weight: bold;
+          transition: background-color 0.3s ease;
+      }
+
+      .btn:hover {
+          background-color: #28B74D;
+      }
+
+      .btn img {
+          width: 32px;
+          height: 32px;
+          margin-right: 8px;
+      }
+
+      .footer {
+          margin-top: 30px;
+          font-size: 0.9rem;
+          color: #777;
+      }
   </style>
-
+  
   <script>
     (function() {
       var path = window.location.pathname;
       var regex = /^\/(?:football-link\/)?content\/(program|session)\/([0-9a-zA-Z_-]+)\/?$/;
       var match = path.match(regex);
 
+      window.__IFOOTBALL_DEEP_LINK__ = "ifootball://content/123";
+
       if (match) {
         var type = match[1];
         var id   = match[2];
-        var deepLink = "ifootballpro://content/" + type + "/" + id;
 
-        // Update Smart App Banner meta
+        var deepLink = "ifootballpro://content/" + type + "/" + id;
+        
+        window.__IFOOTBALL_DEEP_LINK__ = deepLink;
+
         var metaTag = document.querySelector('meta[name="apple-itunes-app"]');
         if (metaTag) {
           metaTag.setAttribute("content", "app-id=6741595234, app-argument=" + deepLink);
         }
-
-        // Fallback to App Store if the app is not installed
-        var appStoreURL = "https://apps.apple.com/us/app/ifootball-pro/id6741595234";
-        var fallbackTimer = setTimeout(function() {
-          window.location.href = appStoreURL;
-        }, 1500);
-
-        // Attempt to open the app
-        window.location.href = deepLink;
-
-        // Update the manual button link in case user returns
-        var openLink = document.getElementById("openAppLink");
-        if (openLink) {
-          openLink.href = deepLink;
-        }
       }
     })();
+
+    window.onload = function() {
+        var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+        var deepLink = window.__IFOOTBALL_DEEP_LINK__ || "ifootball://content/123";
+
+        window.location = deepLink;
+
+        setTimeout(function() {
+            if (/android/i.test(userAgent)) {
+                window.location = "https://play.google.com/store/apps/details?id=com.kuick.tech.footballpro";
+            } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+                window.location = "https://apps.apple.com/us/app/ifootball-pro/id6741595234";
+            }
+        }, 1000);
+    };
   </script>
 </head>
 <body>
   <div class="container">
-    <h1>Welcome to iFootball Pro</h1>
-    <p>
-        We'll automatically attempt to open 
-        <code>ifootballpro://content/{type}/{id}</code>. If the app is not installed, 
-        you'll be sent to the App Store.
-      </p>
-    
-    <a class="button" href="https://apps.apple.com/us/app/ifootball-pro/id6741595234">
-      Download iFootball Pro
-    </a>
-    <a class="button" id="openAppLink" href="ifootballpro://hello-world?param=123">
-      Open iFootball Pro
-    </a>
+    <h1>Open IFootball</h1>
+    <p>We are trying to open the app. If it doesn't open, please download it from your store.</p>
+
+    <div class="buttons">
+      <a href="https://play.google.com/store/apps/details?id=com.kuick.tech.footballpro" class="btn">
+        <img src="images/ic_google_play.svg" alt="Play Store">
+        Google Play
+      </a>
+
+      <a href="https://apps.apple.com/us/app/ifootball-pro/id6741595234" class="btn">
+        <img src="images/ic_app_store.svg" alt="App Store">
+        App Store
+      </a>
+    </div>
   </div>
 </body>
 </html>
