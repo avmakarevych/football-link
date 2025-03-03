@@ -67,10 +67,13 @@
 
   <script>
     (function() {
-      // Get the current path, e.g. "/content/program/2"
-      var path = window.location.pathname;
-      // Regex to match /content/(program|session)/{id}
-      var regex = /^\/content\/(program|session)\/([0-9a-zA-Z_-]+)\/?$/;
+      // Current path, e.g. "/football-link/content/program/2"
+      var path = window.location.pathname; 
+      console.log("Current path:", path);
+
+      // Regex to match an optional "/football-link" prefix, then "/content/(program|session)/{id}"
+      // Example matches: "/football-link/content/program/2" or "/content/program/2"
+      var regex = /^\/(?:football-link\/)?content\/(program|session)\/([0-9a-zA-Z_-]+)\/?$/;
       var match = path.match(regex);
 
       if (match) {
@@ -80,19 +83,22 @@
         // Construct the custom deep link
         var deepLink = "ifootballpro://content/" + type + "/" + id;
         
-        // Update the Smart App Banner meta tag
+        // 1) Update the Smart App Banner meta tag
         var metaTag = document.querySelector('meta[name="apple-itunes-app"]');
         if (metaTag) {
           metaTag.setAttribute("content", "app-id=6741595234, app-argument=" + deepLink);
-          console.log("Updated Smart App Banner meta:", metaTag.getAttribute("content"));
+          console.log("Updated Smart App Banner meta to:", metaTag.getAttribute("content"));
         }
 
-        // Also update the manual button link
+        // 2) Update the manual button link
         var openLink = document.getElementById("openAppLink");
         if (openLink) {
           openLink.href = deepLink;
-          console.log("Updated manual open button to:", openLink.href);
+          console.log("Updated 'Open iFootball Pro' button to:", openLink.href);
         }
+
+      } else {
+        console.log("No deep link match. The button remains ifootballpro://hello-world?param=123 or default.");
       }
     })();
   </script>
@@ -101,15 +107,9 @@
   <div class="container">
     <h1>Welcome to iFootball Pro</h1>
     <p>
-      This is the main landing page for iFootball Pro.  
-      If you navigate here via <code>https://avmakarevych.github.io/football-link/</code>,
-      you’ll see this page.
-    </p>
-    <p>
-      Example deep link paths (handled by 404 fallback or this index):
-      <code>/content/program/12345</code> or <code>/content/session/67890</code>.
-      If those paths match, we update the Smart App Banner meta tag and the button to open
-      <code>ifootballpro://content/{type}/{id}</code>.
+      This is the landing page for iFootball Pro.<br/>
+      If the path is <code>/football-link/content/program/123</code> or
+      <code>/football-link/content/session/456</code>, we'll update the Smart App Banner and the button.
     </p>
 
     <!-- Button to go to the App Store -->
@@ -118,7 +118,7 @@
     </a>
 
     <!-- Button to manually open the app via custom scheme -->
-    <!-- Give it an ID so we can dynamically update the href if there's a match -->
+    <!-- By default shows hello-world, but JS will overwrite if there's a deep link match -->
     <a class="button" id="openAppLink" href="ifootballpro://hello-world?param=123">
       Open iFootball Pro
     </a>
