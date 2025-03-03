@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <!-- Smart App Banner for iOS -->
   <meta name="apple-itunes-app" content="app-id=6741595234, app-argument=ifootballpro://" />
-  
+
   <title>iFootball Pro</title>
   <style>
     /* Global Reset & Font */
@@ -65,19 +65,17 @@
   </style>
   <script>
     (function() {
-      // Get the current path, e.g. "/content/program/12345"
+      // Current path, e.g. "/content/program/123"
       var path = window.location.pathname;
-      // Check if it matches /content/(program|session)/{id}
+      // Regex: /content/(program|session)/{id}
       var regex = /^\/content\/(program|session)\/([0-9a-zA-Z_-]+)\/?$/;
       var match = path.match(regex);
       if (match) {
         var type = match[1]; // "program" or "session"
-        var id   = match[2]; // ID
-        
-        // Construct the custom deep link
+        var id   = match[2]; // the ID
+        // Build the custom deep link
         var deepLink = "ifootballpro://content/" + type + "/" + id;
-        
-        // Find the meta tag for the Smart App Banner
+        // Update the meta tag for Smart App Banner
         var metaTag = document.querySelector('meta[name="apple-itunes-app"]');
         if (metaTag) {
           metaTag.setAttribute("content", "app-id=6741595234, app-argument=" + deepLink);
@@ -90,23 +88,19 @@
 <body>
   <div class="container">
     <h1>Welcome to iFootball Pro</h1>
+    <p>This site uses a Smart App Banner to promote our application.</p>
     <p>
-      This is the main landing page for iFootball Pro.  
-      If you navigate here via <code>https://your-repo.github.io/</code>, you’ll see this page.
-    </p>
-    <p>
-      Example deep link paths (handled by 404 fallback):
-      <code>/content/program/12345</code> or <code>/content/session/67890</code>.
-      If those paths match, we update the meta tag so the iOS Smart App Banner can open
+      Example paths: <code>/content/program/12345</code> or <code>/content/session/67890</code>.
+      If the path matches, we update the Smart App Banner so iOS opens our custom scheme
       <code>ifootballpro://content/{type}/{id}</code>.
     </p>
 
-    <!-- Button to go to the App Store -->
+    <!-- Button to open the App Store -->
     <a class="button" href="https://apps.apple.com/us/app/ifootball-pro/id6741595234">
       Download iFootball Pro
     </a>
 
-    <!-- Button to manually open the app via custom scheme -->
+    <!-- Button to open the app manually via custom scheme -->
     <a class="button" href="ifootballpro://hello-world?param=123">
       Open iFootball Pro
     </a>
