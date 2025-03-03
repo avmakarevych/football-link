@@ -68,11 +68,11 @@
   <script>
     (function() {
       // Current path, e.g. "/football-link/content/program/2"
-      var path = window.location.pathname; 
+      var path = window.location.pathname;
       console.log("Current path:", path);
 
       // Regex to match an optional "/football-link" prefix, then "/content/(program|session)/{id}"
-      // Example matches: "/football-link/content/program/2" or "/content/program/2"
+      // Examples: "/football-link/content/program/2" or "/content/program/2"
       var regex = /^\/(?:football-link\/)?content\/(program|session)\/([0-9a-zA-Z_-]+)\/?$/;
       var match = path.match(regex);
 
@@ -87,18 +87,20 @@
         var metaTag = document.querySelector('meta[name="apple-itunes-app"]');
         if (metaTag) {
           metaTag.setAttribute("content", "app-id=6741595234, app-argument=" + deepLink);
-          console.log("Updated Smart App Banner meta to:", metaTag.getAttribute("content"));
+          console.log("Updated Smart App Banner meta:", metaTag.getAttribute("content"));
         }
 
-        // 2) Update the manual button link
+        // 2) Immediately redirect to the custom scheme
+        console.log("Redirecting to:", deepLink);
+        window.location.href = deepLink;
+
+        // 3) Also update the manual button link (optional, if user comes back)
         var openLink = document.getElementById("openAppLink");
         if (openLink) {
           openLink.href = deepLink;
-          console.log("Updated 'Open iFootball Pro' button to:", openLink.href);
         }
-
       } else {
-        console.log("No deep link match. The button remains ifootballpro://hello-world?param=123 or default.");
+        console.log("No deep link match. Will not auto-redirect.");
       }
     })();
   </script>
@@ -107,10 +109,10 @@
   <div class="container">
     <h1>Welcome to iFootball Pro</h1>
     <p>
-      This is the landing page for iFootball Pro.<br/>
-      If the path is <code>/football-link/content/program/123</code> or
-      <code>/football-link/content/session/456</code>, we'll update the Smart App Banner and the button.
+      If this path is <code>/football-link/content/program/123</code> or
+      <code>/content/session/456</code>, we will automatically attempt to open:
     </p>
+    <p><code>ifootballpro://content/{type}/{id}</code></p>
 
     <!-- Button to go to the App Store -->
     <a class="button" href="https://apps.apple.com/us/app/ifootball-pro/id6741595234">
@@ -118,8 +120,7 @@
     </a>
 
     <!-- Button to manually open the app via custom scheme -->
-    <!-- By default shows hello-world, but JS will overwrite if there's a deep link match -->
-    <a class="button" id="openAppLink" href="ifootballpro://hello-world?param=123">
+    <a class="button" id="openAppLink" href="ifootballpro://hello-world-main?param=123">
       Open iFootball Pro
     </a>
   </div>
