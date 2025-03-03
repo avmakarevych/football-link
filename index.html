@@ -7,7 +7,6 @@
   <meta name="apple-itunes-app" content="app-id=6741595234, app-argument=ifootballpro://" />
 
   <title>iFootball Pro</title>
-
   <style>
     /* Global Reset & Font */
     * {
@@ -72,7 +71,6 @@
       console.log("Current path:", path);
 
       // Regex to match an optional "/football-link" prefix, then "/content/(program|session)/{id}"
-      // Examples: "/football-link/content/program/2" or "/content/program/2"
       var regex = /^\/(?:football-link\/)?content\/(program|session)\/([0-9a-zA-Z_-]+)\/?$/;
       var match = path.match(regex);
 
@@ -90,15 +88,26 @@
           console.log("Updated Smart App Banner meta:", metaTag.getAttribute("content"));
         }
 
-        // 2) Immediately redirect to the custom scheme
-        console.log("Redirecting to:", deepLink);
+        // 2) Attempt to open the custom scheme
+        console.log("Attempting to open custom scheme:", deepLink);
+
+        // 2a) Set a timeout for fallback to the App Store if not installed
+        var appStoreURL = "https://apps.apple.com/us/app/ifootball-pro/id6741595234";
+        var fallbackTimer = setTimeout(function() {
+          console.log("No app installed - redirecting to App Store");
+          window.location.href = appStoreURL;
+        }, 1500); // 1.5s is a common delay
+
+        // 2b) Try to open the app
         window.location.href = deepLink;
 
-        // 3) Also update the manual button link (optional, if user comes back)
+        // 3) Also update the manual button link if user returns
         var openLink = document.getElementById("openAppLink");
         if (openLink) {
           openLink.href = deepLink;
         }
+
+        // If the user has the app, they’ll leave Safari immediately and never hit the fallback after 1.5s.
       } else {
         console.log("No deep link match. Will not auto-redirect.");
       }
@@ -109,18 +118,19 @@
   <div class="container">
     <h1>Welcome to iFootball Pro</h1>
     <p>
-      If this path is <code>/football-link/content/program/123</code> or
-      <code>/content/session/456</code>, we will automatically attempt to open:
+      If the path is <code>/football-link/content/program/123</code> or
+      <code>/content/session/456</code>, we'll automatically try to open
+      <code>ifootballpro://content/{type}/{id}</code>.<br/>
+      If the app is <strong>not</strong> installed, after ~1.5 seconds you'll be sent to the App Store.
     </p>
-    <p><code>ifootballpro://content/{type}/{id}</code></p>
 
-    <!-- Button to go to the App Store -->
+    <!-- Button to go to the App Store manually -->
     <a class="button" href="https://apps.apple.com/us/app/ifootball-pro/id6741595234">
       Download iFootball Pro
     </a>
 
     <!-- Button to manually open the app via custom scheme -->
-    <a class="button" id="openAppLink" href="ifootballpro://hello-world-main?param=123">
+    <a class="button" id="openAppLink" href="ifootballpro://hello-world?param=123">
       Open iFootball Pro
     </a>
   </div>
