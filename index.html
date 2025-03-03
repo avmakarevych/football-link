@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Smart App Banner for iOS -->
+  <meta name="apple-itunes-app" content="app-id=6741595234, app-argument=ifootballpro://" />
+  
+  <title>iFootball Pro</title>
+  <style>
+    /* Global Reset & Font */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: "Arial", sans-serif;
+      background: linear-gradient(135deg, #007aff 0%, #50c9ff 100%);
+      color: #333;
+      text-align: center;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .container {
+      background-color: #fff;
+      width: 90%;
+      max-width: 600px;
+      margin: auto;
+      margin-top: 60px;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 20px;
+      color: #007aff;
+    }
+
+    p {
+      font-size: 1rem;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    a.button {
+      display: inline-block;
+      padding: 14px 28px;
+      margin-top: 10px;
+      text-decoration: none;
+      background-color: #007aff;
+      color: #fff;
+      border-radius: 50px;
+      font-size: 1rem;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    a.button:hover {
+      background-color: #005bb5;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 480px) {
+      .container {
+        margin-top: 40px;
+        padding: 20px;
+      }
+      h1 {
+        font-size: 1.8rem;
+      }
+      p, a.button {
+        font-size: 0.95rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Welcome to iFootball Pro</h1>
+    <p>This site uses a Smart App Banner to promote our application.</p>
+    <p>
+      If you have the app installed, tapping the banner will automatically open
+      it; otherwise, you will be redirected to the App Store to download it.
+    </p>
+    <a class="button" href="https://apps.apple.com/us/app/ifootball-pro/id6741595234">
+      Download iFootball Pro
+    </a>
+  </div>
+</body>
+</html>
