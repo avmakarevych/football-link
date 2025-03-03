@@ -50,7 +50,7 @@
     a.button {
       display: inline-block;
       padding: 14px 28px;
-      margin-top: 10px;
+      margin: 10px 5px 0 5px;
       text-decoration: none;
       background-color: #007aff;
       color: #fff;
@@ -95,8 +95,15 @@
       Якщо шлях відповідає цьому шаблону, meta‑тег буде оновлено і Smart App Banner відкриватиме додаток за схемою
       <code>ifootballpro://content/{type}/{id}</code>.
     </p>
+
+    <!-- Кнопка для перехода в App Store -->
     <a class="button" href="https://apps.apple.com/us/app/ifootball-pro/id6741595234">
       Download iFootball Pro
+    </a>
+
+    <!-- Кнопка для ручного открытия приложения через кастомную схему -->
+    <a class="button" href="ifootballpro://hello-world?param=123">
+      Открыть iFootball Pro вручную
     </a>
   </div>
 </body>
