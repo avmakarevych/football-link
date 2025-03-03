@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!-- Smart App Banner for iOS -->
+  <!-- Smart App Banner for iOS (буде оновлено скриптом, якщо URL відповідає шаблону) -->
   <meta name="apple-itunes-app" content="app-id=6741595234, app-argument=ifootballpro://" />
   
   <title>iFootball Pro</title>
@@ -62,29 +62,38 @@
       background-color: #005bb5;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     }
-
-    /* Responsive adjustments */
-    @media (max-width: 480px) {
-      .container {
-        margin-top: 40px;
-        padding: 20px;
-      }
-      h1 {
-        font-size: 1.8rem;
-      }
-      p, a.button {
-        font-size: 0.95rem;
-      }
-    }
   </style>
+  <script>
+    (function() {
+      // Отримуємо шлях поточного URL
+      var path = window.location.pathname; // Наприклад: "/content/program/12345"
+      // Шаблон: /content/(program|session)/{id}
+      var regex = /^\/content\/(program|session)\/([0-9a-zA-Z_-]+)\/?$/;
+      var match = path.match(regex);
+      if (match) {
+        var type = match[1]; // "program" або "session"
+        var id = match[2];   // ідентифікатор
+        // Формуємо кастомний deep link
+        var deepLink = "ifootballpro://content/" + type + "/" + id;
+        // Знаходимо meta-тег із name="apple-itunes-app"
+        var metaTag = document.querySelector('meta[name="apple-itunes-app"]');
+        if (metaTag) {
+          // Оновлюємо app-argument новим deep link
+          metaTag.setAttribute("content", "app-id=6741595234, app-argument=" + deepLink);
+          console.log("Оновлено meta-тег: " + metaTag.getAttribute("content"));
+        }
+      }
+    })();
+  </script>
 </head>
 <body>
   <div class="container">
     <h1>Welcome to iFootball Pro</h1>
     <p>This site uses a Smart App Banner to promote our application.</p>
     <p>
-      If you have the app installed, tapping the banner will automatically open
-      it; otherwise, you will be redirected to the App Store to download it.
+      Приклад URL для обробки: <code>/content/program/12345</code> або <code>/content/session/67890</code>.
+      Якщо шлях відповідає цьому шаблону, meta‑тег буде оновлено і Smart App Banner відкриватиме додаток за схемою
+      <code>ifootballpro://content/{type}/{id}</code>.
     </p>
     <a class="button" href="https://apps.apple.com/us/app/ifootball-pro/id6741595234">
       Download iFootball Pro
